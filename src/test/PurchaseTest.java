@@ -17,7 +17,7 @@ import domain.Article;
 import domain.Purchase;
 import exceptions.PurchaseException;
 
-public class PurchaseTest2 {
+public class PurchaseTest {
 	// Variables comunes para los casos de prueba.
 		private Purchase basket= new Purchase();
 		private double price;
