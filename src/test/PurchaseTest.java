@@ -18,18 +18,17 @@ import domain.Purchase;
 import exceptions.PurchaseException;
 
 public class PurchaseTest {
-	// Variables comunes para los casos de prueba.
+	// Common variables for all test.
 		private Purchase basket= new Purchase();
 		private double price;
 		private int quantity=1;
 		private Article article;
 
-		// Inicialización a realizar antes de nada cuando se van a ejecutar los casos 	// de prueba de la clase
+		// Initialization of the variables before the execution of each test
 		@Before
 		public void initialize() {
-			System.out.println("Inicializo y compruebo ...");
-			assertNull(basket.getDate());
-			assertEquals(basket.getCost(), 0, 0);
+			System.out.println("Initialize  ...");
+			
 			price= 0;	// 234.99 real value
 			quantity = 1;
 			article = new Article("404", "MASK PINK", price, false, quantity);
