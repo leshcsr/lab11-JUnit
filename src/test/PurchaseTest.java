@@ -70,7 +70,7 @@ public class PurchaseTest {
 			try {
 				basket.removeBasket(article, quantity);
 			} catch (PurchaseException e) {
-				fail("Impossible!!");
+				fail();
 			}
 		}
 		
@@ -90,7 +90,7 @@ public class PurchaseTest {
 				assertEquals(expected, cost, 0);
 				
 			} catch (ParseException e) {
-				fail("The date 23/12/2020 is correct");
+				fail();
 			}
 		}
 
