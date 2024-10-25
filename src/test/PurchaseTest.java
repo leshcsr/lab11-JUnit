@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import domain.Article;
 import domain.Purchase;
+import domain.PurchasedArticle;
 import exceptions.PurchaseException;
 
 public class PurchaseTest {
@@ -29,7 +30,8 @@ public class PurchaseTest {
 		public void initialize() {
 			System.out.println("Initialize  ...");
 			
-			price= 0;	// 234.99 real value
+			// Price 234.99 real value
+			price= 234.99;	
 			quantity = 1;
 			article = new Article("404", "MASK PINK", price, false, quantity);
 		} 
@@ -46,7 +48,8 @@ public class PurchaseTest {
 			double obtained = basket.addBasket(article, quantity);
 			
 			//3. check
-			assertEquals(expected, obtained,0); //expected always 1st param
+			//expected always 1st param
+			assertEquals(expected, obtained,0);
 			    
 	                       
 	        //4. stablish the initial state 
@@ -63,14 +66,11 @@ public class PurchaseTest {
 			
 			quantity = 3;
 			price = 234.99;
-			double expected = quantity*price;
-
-			double obtained = basket.addBasket(article, quantity);
-			assertEquals(expected, obtained, 0);
 			try {
-				basket.removeBasket(article, quantity);
-			} catch (PurchaseException e) {
-				fail();
+				basket.addBasket(article, 3);
+		        fail("Expected a RuntimeException for insufficient stock");
+			} catch (RuntimeException e) {
+				assertEquals("There is not enough stock", e.getMessage());
 			}
 		}
 		
@@ -83,16 +83,53 @@ public class PurchaseTest {
 				assertNotNull(basket.getDate());
 				
 				quantity = 3;
-				double expected= quantity*article.getPrice();
 				
-				double cost= basket.addBasket(article, quantity);
-				
-				assertEquals(expected, cost, 0);
-				
+				try {					
+					basket.addBasket(article, quantity);
+					fail("Expected a RuntimeException because the purchase is already closed");
+				} catch(RuntimeException e){
+					assertEquals("The purchase is closed. No articles can be added", e.getMessage());					
+				}
+	
 			} catch (ParseException e) {
-				fail();
+				fail("The date format should be correct");
 			}
 		}
+		
+		@Test
+		public void testAddBasket4() {
+			try {
+				quantity = 1;
+				basket.addBasket(null, quantity);
+				fail("The code must not continue !!");
+			} catch (NullPointerException e) {
+				fail("Null pointer exception not handled");
+			} catch (RuntimeException e) {
+				assertTrue(true);
+			}
+		}
+		
+		@Test
+		public void testAddBasket5() {
+		    quantity = 1;
+		    price = 100.00;
+		    article = new Article("101", "BLUE MASK", price, false, 10);
+
+		    basket.addBasket(article, quantity);
+		    
+		    // Se vuelve a agregar el mismo artículo (debería actualizar la cantidad)
+		    int additionalQuantity = 2;
+		    double expectedCost = (quantity + additionalQuantity) * price;
+		    
+		    // Se agrega más unidades del mismo artículo
+		    double obtainedCost = basket.addBasket(article, additionalQuantity);
+		    
+		    // Verificar que la cantidad del artículo en el carrito ha sido actualizada
+		    assertEquals(expectedCost, obtainedCost, 0);
+		    
+
+		}
+
 
 
 }

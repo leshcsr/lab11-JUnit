@@ -58,6 +58,10 @@ public class Purchase {
 			throw new RuntimeException("The purchase is closed. No articles can be added");
 		}
 
+		if (art == null) {
+	        throw new IllegalArgumentException("Article cannot be null");
+	    }
+		
 		int stock = art.getStock();
 		if (stock < q) {
 			throw new RuntimeException("There is not enough stock");
